@@ -9,6 +9,9 @@ Django 2.0 +: https://www.djangoproject.com/
 PyMySQL 0.8.0: https://github.com/PyMySQL/PyMySQL
 django-bootstrap3 11.0.0：https://github.com/dyve/django-bootstrap3
 pycryptodome 3.7.3：https://github.com/Legrandin/pycryptodome
+
+
+
 提供接口
 接口	URL	请求方式
 添加发布会接口	http://127.0.0.1:8000/api/add_event/	POST
