@@ -1,9 +1,8 @@
-# web_request_test
-基于Django的简易发布会签到系统（基于 Dango2.0）。
+# guest_management_system_web_request_test
 
-注：本项目与书上的代码会有一些差异。
+# 基于Django的简易发布会签到系统（基于 Dango2.22）。
 
-Python版本与依赖库：
+# Python版本与依赖库：
 
 python 3.6 + : https://www.python.org/
 
@@ -17,7 +16,7 @@ pycryptodome 3.7.3：https://github.com/Legrandin/pycryptodome
 
 
 
-提供接口
+# 提供接口
 
 接口	                   URL	                              请求方式
 
