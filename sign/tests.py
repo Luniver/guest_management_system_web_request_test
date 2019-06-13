@@ -62,11 +62,11 @@ class EventManageTest(TestCase):
     def setUp(self):
         User.objects.create_user('admin','admin@mail.com','admin123456')
         Event.objects.create(name = 'xiaomi5',limit=2000,address='shandong',status=1,start_time='2019-6-13 9:21:00')
-        self.login_user = {'username':'admin','password':'admin123456'}
+        login_user = {'username':'admin','password':'admin123456'}
+        self.client.post('/login_action/', data=login_user)
 
     def test_event_manage_success(self):
         '''测试发布会:xiaomi5'''
-        response = self.client.post('/login_action/',data=self.login_user)
         response = self.client.post('/event_manage/')
         self.assertEqual(response.status_code,200)
         self.assertIn(b"xiaomi5",response.content)
@@ -74,7 +74,6 @@ class EventManageTest(TestCase):
 
     def test_event_manage_search_success(self):
         '''测试发布会搜索'''
-        response = self.client.post('/login_action/', data=self.login_user)
         response = self.client.post('/search_name/',{'name':'xiaomi5'})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"xiaomi5", response.content)
@@ -86,11 +85,11 @@ class GuestManageTest(TestCase):
         User.objects.create_user('admin','admin@mail.com','admin123456')
         Event.objects.create(id=1,name = 'xiaomi5',limit=2000,address='shandong',status=1,start_time='2019-6-13 9:21:00')
         Guest.objects.create(realname='alen',phone=18611001100,email='alen@mail.com',sign = 0,event_id=1)
-        self.login_user= {'username':'admin','password':'admin123456'}
+        login_user = {'username': 'admin', 'password': 'admin123456'}
+        self.client.post('/login_action/', data=login_user)
 
     def test_guest_manage_success(self):
         '''测试嘉宾信息：alen'''
-        response = self.client.post('/login_action/', data=self.login_user)
         response = self.client.post('/guest_manage/')
         self.assertEqual(response.status_code,200)
         self.assertIn(b"alen",response.content)
@@ -98,7 +97,6 @@ class GuestManageTest(TestCase):
 
     def test_guest_manage_search_success(self):
         '''测试嘉宾搜索'''
-        response = self.client.post('/login_action/', data=self.login_user)
         response = self.client.post('/search_realname/',{"realname":"alen"})
         self.assertEqual(response.status_code,200)
         self.assertIn(b"alen", response.content)
@@ -113,32 +111,29 @@ class SignIndexActionTest(TestCase):
         Event.objects.create(id=2, name='xiaomi5', limit=1000, address='shandong', status=1,start_time='2019-6-13 9:21:00')
         Guest.objects.create(realname='alen', phone=18611001100, email='alen@mail.com', sign=0, event_id=1)
         Guest.objects.create(realname='Anna', phone=18611001101, email='Anna@mail.com', sign=1, event_id=2)
-        self.login_user = {'username': 'admin', 'password': 'admin123456'}
+        login_user = {'username': 'admin', 'password': 'admin123456'}
+        self.client.post('/login_action/', data=login_user)
 
     def test_sign_index_action_phone_null(self):
         '''手机号为空'''
-        response = self.client.post('/login_action/', data=self.login_user)
         response = self.client.post('/sign_index_action/1/', {'phone': ''})
         self.assertEqual(response.status_code,200)
         self.assertIn(b"phone error",response.content)
 
     def test_sign_index_action_phone_or_event_id_error(self):
         '''手机号或发布会id不正确'''
-        response = self.client.post('/login_action/', data=self.login_user)
         response = self.client.post('/sign_index_action/2/', {'phone': '18611001100'})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"event id or phone error", response.content)
 
     def test_sign_index_action_user_has_sign(self):
         '''用户已经签到'''
-        response = self.client.post('/login_action/', data=self.login_user)
         response = self.client.post('/sign_index_action/2/', {'phone': '18611001101'})
         self.assertEqual(response.status_code,200)
         self.assertIn(b"user has sign in", response.content)
 
     def test_sign_index_action_sign_success(self):
         '''签到成功'''
-        response = self.client.post('/login_action/', data=self.login_user)
         response = self.client.post('/sign_index_action/1/', {'phone': '18611001100'})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"sign in success", response.content)
