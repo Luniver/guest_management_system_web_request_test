@@ -5,6 +5,7 @@ from sign.models import  Event,Guest
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import render,get_object_or_404
 
+
 # Create your views here.
 
 def index(request):
@@ -100,3 +101,6 @@ def logout(request):
     auth.logout(request)
     response = HttpResponseRedirect('/index/')
     return response
+
+
+
