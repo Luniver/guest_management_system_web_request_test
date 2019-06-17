@@ -39,11 +39,11 @@ def add_event(request):
 #添加嘉宾接口
 def add_guest(request):
     eid = request.POST.get('eid','')
-    realname = request.POST.get('prealname','')
+    realname = request.POST.get('realname','')
     phone = request.POST.get('phone','')
     email = request.POST.get('email','')
 
-    if eid ==''or realname== '' or phone=='':
+    if eid ==''or realname=='' or phone=='':
         return JsonResponse({'status':10021,'message':'parameter error'})
 
     result = Event.objects.filter(id=eid)
@@ -55,7 +55,7 @@ def add_guest(request):
         return JsonResponse({'status':10023,'message':'event status is not available'})
 
     event_limit = Event.objects.get(id=eid).limit
-    guest_limit = Guest.objects.filiter(event_id=eid)
+    guest_limit = Guest.objects.filter(event_id=eid)
 
     if len(guest_limit) >= event_limit:
         return JsonResponse({'status':10024,'message':'event number is full'})
@@ -129,7 +129,7 @@ def get_guest_list(request):
 
     if eid !='' and realname !='':
         datas=[]
-        results = Guest.objects.filiter(event_id=eid)
+        results = Guest.objects.filter(event_id=eid)
         if results:
             for r in results:
                 guest = {}
